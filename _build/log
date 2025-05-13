@@ -1,0 +1,20 @@
+# dune build
+# OCAMLPARAM: unset
+# Shared cache: enabled-except-user-rules
+# Shared cache location: /home/izurai/.cache/dune/db
+# Workspace root: /home/izurai/Ocaml/Puissance4
+# Auto-detected concurrency: 4
+# Dune context:
+#  { name = "default"
+#  ; kind = "default"
+#  ; profile = Dev
+#  ; merlin = true
+#  ; fdo_target_exe = None
+#  ; build_dir = In_build_dir "default"
+#  ; instrument_with = []
+#  }
+$ /usr/bin/ocamlc.opt -config > /tmp/dune_5ab41f_output
+$ (cd _build/default && /usr/bin/ocamldep.opt -modules -impl puissance4.ml) > _build/default/.puissance4.eobjs/dune__exe__Puissance4.impl.d
+$ (cd _build/default && /usr/bin/ocamlc.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -bin-annot -bin-annot-occurrences -I .puissance4.eobjs/byte -I /home/izurai/.opam/default/lib/base -I /home/izurai/.opam/default/lib/base/base_internalhash_types -I /home/izurai/.opam/default/lib/base/shadow_stdlib -I /home/izurai/.opam/default/lib/ocaml_intrinsics_kernel -I /home/izurai/.opam/default/lib/sexplib0 -I /home/izurai/.opam/default/lib/stdio -no-alias-deps -opaque -open Dune__exe -o .puissance4.eobjs/byte/dune__exe__Puissance4.cmo -c -impl puissance4.ml)
+$ (cd _build/default && /usr/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -I .puissance4.eobjs/byte -I .puissance4.eobjs/native -I /home/izurai/.opam/default/lib/base -I /home/izurai/.opam/default/lib/base/base_internalhash_types -I /home/izurai/.opam/default/lib/base/shadow_stdlib -I /home/izurai/.opam/default/lib/ocaml_intrinsics_kernel -I /home/izurai/.opam/default/lib/sexplib0 -I /home/izurai/.opam/default/lib/stdio -intf-suffix .ml -no-alias-deps -opaque -open Dune__exe -o .puissance4.eobjs/native/dune__exe__Puissance4.cmx -c -impl puissance4.ml)
+$ (cd _build/default && /usr/bin/ocamlopt.opt -w @1..3@5..28@30..39@43@46..47@49..57@61..62-40 -strict-sequence -strict-formats -short-paths -keep-locs -g -o puissance4.exe /home/izurai/.opam/default/lib/base/base_internalhash_types/base_internalhash_types.cmxa -I /home/izurai/.opam/default/lib/base/base_internalhash_types /home/izurai/.opam/default/lib/sexplib0/sexplib0.cmxa /home/izurai/.opam/default/lib/base/shadow_stdlib/shadow_stdlib.cmxa /home/izurai/.opam/default/lib/ocaml_intrinsics_kernel/ocaml_intrinsics_kernel.cmxa -I /home/izurai/.opam/default/lib/ocaml_intrinsics_kernel /home/izurai/.opam/default/lib/base/base.cmxa -I /home/izurai/.opam/default/lib/base /home/izurai/.opam/default/lib/stdio/stdio.cmxa .puissance4.eobjs/native/dune__exe.cmx .puissance4.eobjs/native/dune__exe__Puissance4.cmx)

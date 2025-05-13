@@ -1,0 +1,7 @@
+(executable
+ (name sum)
+ (libraries base stdio))
+
+(executable
+  (name puissance4)
+  (libraries base stdio))
