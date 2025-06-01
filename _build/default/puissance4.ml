@@ -1,9 +1,11 @@
 type case = X|O|Vide;;
+type joueur = Xavier|Ophelie;;
 
 type plateau = {
         p: case array array;
         largeur: int;
         hauteur: int;
+        joueur: joueur;
 };;
 
 (* Fonction pour choisir la taille du plateau *)
@@ -13,7 +15,7 @@ let largeur_plateau = 7;; (* ici aussi *)
 
 (* Fonction pour afficher le plateau *)
 (* On parcours le tableau avec les deux boucles, on affiche un espace si la case
- est vide et les caractères "x" ou "o" selon les pions dans les cases *)
+ est vide et les caractères "X" ou "O" selon les pions dans les cases *)
 
 let afficher_plateau_it (plateau:plateau) =
         print_newline();
@@ -30,7 +32,8 @@ let afficher_plateau_it (plateau:plateau) =
         done;
         for i = 1 to plateau.largeur do
                 print_string(" "); print_int(i);
-        done;;
+        done
+;;
 
 (* fait exactement la même chose que la fonction du dessus mais en récursif *)
 let afficher_plateau (plateau:plateau) =
@@ -67,9 +70,10 @@ let afficher_plateau (plateau:plateau) =
                 in
                 aux 1;
         in
-        afficher_index_colonnes (plateau.largeur);; (* affiche les index *)
+        afficher_index_colonnes (plateau.largeur) (* affiche les index *)
+;;
 
-(* Test fonction afficher_plateau : *)
+(* Test fonction afficher_plateau :
 
 let plateau1 = {
         p = [|[|X;Vide;Vide|];[|O;O;Vide|];[|O;X;X|]|];
@@ -90,22 +94,55 @@ afficher_plateau_it plateau2;;
 afficher_plateau plateau2;;
 
 
-(**)
+*)
 
 (* Fonction pour jouer un coup *)
+(* Cette fonction trouve une ligne vide dans la colonne indiquee par le joueur et
+ met un jeton dans cette case si elle est pas vide, elle change aussi le tour du 
+ joueur en cours *)
 
-(* let jouer_un_coup (plateau:plateau) (x:int) = *)
-(*         for j = 0 to plateau.hauteur - 1 do *)
-(*                 if plateau.p.(x).(j) = Vide then *)
-(*                         plateau.p.(x).(j) <- joueur; *)
-(**)
+let jouer_un_coup (plateau: plateau) (col: int) : plateau =
+        if col < 1 || col > plateau.largeur then (
+                print_endline "Colonne invalide.";
+                plateau
+        )
+        else
+                let col_index = col - 1 in
+                let rec trouver_ligne_vide ligne =
+                        if ligne >= plateau.hauteur then None
+                        else match plateau.p.(col_index).(ligne) with
+                        | Vide -> Some ligne
+                        | _ -> trouver_ligne_vide (ligne + 1)
+                in
+                match trouver_ligne_vide 0 with
+                | None -> 
+                        print_endline "Colonne pleine";
+                        plateau
+                | Some ligne ->
+                        let new_p = Array.map Array.copy plateau.p in
+                        new_p.(col_index).(ligne) <- 
+                                (match plateau.joueur with
+                                | Xavier -> X
+                                | Ophelie -> O);
+                        let joueur_suivant = match plateau.joueur with
+                                | Xavier -> Ophelie
+                                | Ophelie -> Xavier
+                        in
+                        { plateau with p = new_p; joueur = joueur_suivant }
+;;
+
+(* Test fonction pour jouer un coup *)
+let plateau3 = {
+        p = Array.make largeur_plateau (Array.make hauteur_plateau Vide);
+        hauteur = 6;
+        largeur = 7;
+        joueur = Xavier;
+};;
+
+let plateau4 = List.fold_left jouer_un_coup plateau3 [5;5;1;1;7;3];;
+
+afficher_plateau plateau3;;
+afficher_plateau plateau4;;
+
 
 (* Fonction pour voir si un joueur à gagner *)
-
-(* let a_gagner (plateau:plateau) = *)
-(*         for i = 0 to plateau.largeur - 1 do *)
-(*                 for j = 0 to plateau.hauteur - 1 do *)
-(**)
-(*                 done; *)
-(*         done;; *)
-(**)

@@ -131,12 +131,54 @@ let jouer_un_coup (plateau: plateau) (col: int) : plateau =
                         { plateau with p = new_p; joueur = joueur_suivant }
 ;;
 
+(* Test fonction pour jouer un coup :
+
+let plateau3 = {
+
+        p = Array.make largeur_plateau (Array.make hauteur_plateau Vide);
+        hauteur = 6;
+        largeur = 7;
+        joueur = Xavier;
+};;
+
+let plateau4 = List.fold_left jouer_un_coup plateau3 [5;5;1;1;7;3];;
+
+afficher_plateau plateau3;;
+afficher_plateau plateau4;;
+*)
+
 (* Fonction pour voir si un joueur à gagner *)
 
-let a_gagner plateau = 
+let a_gagner plateau =    
+        let hauteur = plateau.hauteur in
+        let largeur = plateau.largeur in
+        let p = plateau.p in
+        let dans_limites x y =
+                x >= 0 && x < largeur && y >= 0 && y < hauteur
+        in
+        let aligner i j dx dy =
+                match p.(i).(j) with
+                | Vide -> false
+                | c ->
+                        let rec aux k =
+                                if k = 4 then true
+                                else
+                                        let x = i + k * dx in
+                                        let y = j + k * dy in
+                                        if dans_limites x y && p.(x).(y) = c then aux (k + 1)
+                                        else false
+                        in aux 1
+        in
+        let rec parcours i j =
+                if i >= largeur then false
+                else if j >= hauteur then parcours (i + 1) 0
+                else if
+                        aligner i j 1 0 || (* alignement horizontal *)
+                        aligner i j 0 1 || (* alignement vertical *)
+                        aligner i j 1 1 || (* alignement diagonale vers le haut *)
+                        aligner i j 1 (-1) (* alignement diagonale vers le bas *)
+                then true
+                else parcours i (j + 1)
+                in
+                parcours 0 0
 ;;
-
-(* Game loop *)
-
-let () =
-        
