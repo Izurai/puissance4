@@ -10,8 +10,18 @@ type plateau = {
 
 (* Fonction pour choisir la taille du plateau *)
 
-let hauteur_plateau = 6;; (* mettre un instream pour changer la valeur *)
-let largeur_plateau = 7;; (* ici aussi *)
+let choisir_taille_plateau () =
+        print_string "Rentrer la hauteur : ";
+        print_newline();
+        let hauteur = read_int()
+        in
+        print_string "Rentrer la largeur : ";
+        print_newline();
+        let largeur = read_int()
+        in
+        if largeur <= 0 || hauteur <= 0 then invalid_arg "Il faut rentrer des valeurs positives"
+        else { p = Array.make largeur (Array.make hauteur Vide); hauteur = hauteur; largeur = largeur; joueur = Xavier }
+;;
 
 (* Fonction pour afficher le plateau *)
 (* On parcours le tableau avec les deux boucles, on affiche un espace si la case
@@ -36,7 +46,9 @@ let afficher_plateau_it (plateau:plateau) =
 ;;
 
 (* fait exactement la même chose que la fonction du dessus mais en récursif *)
+
 let afficher_plateau (plateau:plateau) =
+        print_string "\027[2J\027[H";
         print_newline();
         let rec afficher_case_ligne y n = (* affiche les cases d'une ligne donnée *)
                 if n < plateau.largeur then
@@ -88,6 +100,7 @@ let plateau2 = {
         p = Array.make largeur_plateau (Array.make hauteur_plateau Vide);
         hauteur = hauteur_plateau;
         largeur = largeur_plateau;
+        joueur = Xavier;
 };;
 
 afficher_plateau_it plateau2;;
@@ -149,7 +162,7 @@ afficher_plateau plateau4;;
 
 (* Fonction pour voir si un joueur à gagner *)
 
-let a_gagner plateau =    
+let a_gagner plateau =
         let hauteur = plateau.hauteur in
         let largeur = plateau.largeur in
         let p = plateau.p in
@@ -182,3 +195,47 @@ let a_gagner plateau =
                 in
                 parcours 0 0
 ;;
+
+(* Tests fonction a gagner
+
+let plateau5 = {
+
+        p = Array.make largeur_plateau (Array.make hauteur_plateau Vide);
+        hauteur = 6;
+        largeur = 7;
+        joueur = Xavier;
+};;
+
+let plateau6 = List.fold_left jouer_un_coup plateau5 [1;1;2;2;3;3;4];;
+
+afficher_plateau plateau5;;
+afficher_plateau plateau6;;
+
+let print_bool bool =
+        match bool with
+        | true -> print_string "true"
+        | false -> print_string "false"
+;;
+
+print_bool (a_gagner plateau5);;
+print_bool (a_gagner plateau6);;
+
+*)
+
+(* Boucle de jeu *)
+
+let rec boucle_de_jeu plateau =
+        afficher_plateau plateau;
+        match a_gagner plateau with
+        | true ->
+                (match plateau.joueur with
+                | Xavier -> print_string "Xavier (X) a gagné !"
+                | Ophelie -> print_string "Ophelie (O) a gagné !")
+        | false ->
+                let colonne = int_of_string (read_line()) in
+                boucle_de_jeu (jouer_un_coup plateau colonne);
+;;
+
+let () =
+        let plateau = choisir_taille_plateau () in
+        boucle_de_jeu plateau;;
