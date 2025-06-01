@@ -162,7 +162,7 @@ afficher_plateau plateau4;;
 
 (* Fonction pour voir si un joueur à gagner *)
 
-let a_gagner plateau =    
+let a_gagner plateau =
         let hauteur = plateau.hauteur in
         let largeur = plateau.largeur in
         let p = plateau.p in
@@ -232,6 +232,7 @@ let rec boucle_de_jeu plateau =
                 | Xavier -> print_string "Xavier (X) a gagné !"
                 | Ophelie -> print_string "Ophelie (O) a gagné !")
         | false ->
+                print_newline();
                 let colonne = int_of_string (read_line()) in
                 boucle_de_jeu (jouer_un_coup plateau colonne);
 ;;
